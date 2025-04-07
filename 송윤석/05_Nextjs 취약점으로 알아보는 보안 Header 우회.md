@@ -45,6 +45,8 @@ Next.js는 미들웨어의 재귀 호출을 방지하기 위해 `x-middleware-su
 그러나 이 헤더의 값이 예측 가능하고 외부에서 조작이 가능하다는 점이 문제였다.
 공격자는 `middleware:middleware:middleware:middleware:middleware`와 같은 값을 설정하여 미들웨어의 실행을 우회할 수 있다.
 
+![nextjs_middleware2](./images/05/nextjs_middleware2.jpg)
+
 문제 코드 예시:
 ```js
 const subreq = params.request.headers['x-middleware-subrequest'];
