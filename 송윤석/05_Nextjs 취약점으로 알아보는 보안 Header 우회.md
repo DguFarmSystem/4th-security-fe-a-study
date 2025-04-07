@@ -43,11 +43,13 @@ Next.js는 React 기반의 풀스택 웹 애플리케이션 프레임워크로, 
 Next.js는 미들웨어의 재귀 호출을 방지하기 위해 `x-middleware-subrequest`라는 내부 헤더를 사용합니다. 
 이 헤더는 미들웨어가 내부적으로 요청을 보낼 때 설정되며, 이를 통해 무한 루프를 방지한다.
 그러나 이 헤더의 값이 예측 가능하고 외부에서 조작이 가능하다는 점이 문제였다.
-공격자는 이 헤더를 요청에 포함시켜 미들웨어의 실행을 우회할 수 있었다. ​
+공격자는 `middleware:middleware:middleware:middleware:middleware`와 같은 값을 설정하여 미들웨어의 실행을 우회할 수 있다.
 
 문제 코드 예시:
 ```js
 const subreq = params.request.headers['x-middleware-subrequest'];
 const subrequests = typeof subreq === 'string' ? subreq.split(':') : [];
 ```
-위 코드는 `x-middleware-subrequest` 헤더의 값을 가져와 :로 분리하여 배열로 저장한다. 이후 이 배열을 검사하여 재귀 호출 여부를 판단한다. 그러나 외부에서 이 헤더를 조작하여 미들웨어를 우회할 수 있는 취약점이 존재했다. 
+위 코드는 `x-middleware-subrequest` 헤더의 값을 가져와 :로 분리하여 배열로 저장한다. 
+이후 이 배열을 검사하여 재귀 호출 여부를 판단한다. 
+그러나 외부에서 이 헤더를 조작하여 미들웨어를 우회할 수 있는 취약점이 존재했다. 
